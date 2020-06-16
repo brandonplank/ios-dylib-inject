@@ -85,15 +85,15 @@ cp "$PROVISIONING_PATH" "$APP_PATH/embedded.mobileprovision"
 cp -rf $DYLIBS_PATH "$APP_PATH/Dylibs"
 
 # Run optool for all the entries in the Dylibs directory
-for DYLIB_FULL_PATH in $APP_PATH/Dylibs/*; do
+for DYLIB_FULL_PATH in $APP_PATH/Frameworks/*; do
     DYLIB_NAME=$(basename "$DYLIB_FULL_PATH")
     echo "Loading $DYLIB_NAME into $IPA_NAME"
-    optool install -c load -p "@executable_path/Dylibs/$DYLIB_NAME" -t "$APP_PATH/$IPA_NAME"
+    optool install -c load -p "@executable_path/Frameworks/$DYLIB_NAME" -t "$APP_PATH/$IPA_NAME"
 done
 
 # Code-sign with entitlements in the provisioning profile
 # Sign all of the entries in the new-lib
-for FILE_NAME in $APP_PATH/Dylibs/*; do
+for FILE_NAME in $APP_PATH/Frameworks/*; do
     echo "Code-signing - $FILE_NAME"
     codesign -f -s "$CODESIGN_ID" --entitlements "$ENTITLEMENTS_PATH" $FILE_NAME
 done
